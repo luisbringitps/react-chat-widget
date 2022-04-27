@@ -9,7 +9,7 @@ type BaseMessage = {
   unread: boolean;
   customId?: string;
   props?: any;
-  bottomMessage: string;
+  footer: string;
 }
 
 export interface MessageTypes extends BaseMessage {

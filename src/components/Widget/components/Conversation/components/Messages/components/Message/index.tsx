@@ -12,10 +12,11 @@ import './styles.scss';
 type Props = {
   message: MessageTypes;
   showTimeStamp: boolean;
-  showBottomMessage: boolean;
+  bottom: string;
 }
 
-function Message({ message, showTimeStamp, showBottomMessage }: Props) {
+function Message({ message }: Props) {
+  
   const sanitizedHTML = markdownIt({ break: true })
     .use(markdownItClass, {
       img: ['rcw-message-img']
@@ -25,11 +26,11 @@ function Message({ message, showTimeStamp, showBottomMessage }: Props) {
     .use(markdownItLinkAttributes, { attrs: { target: '_blank', rel: 'noopener' } })
     .render(message.text);
 
+    console.log(message)
   return (
     <div className={`rcw-${message.sender}`}>
       <div className="rcw-message-text" dangerouslySetInnerHTML={{ __html: sanitizedHTML.replace(/\n$/,'') }} />
-      {showTimeStamp && <span className="rcw-timestamp">{format(message.timestamp, 'hh:mm')}</span>}
-      {showBottomMessage && <span className="rcw-timestamp">{message.bottomMessage}</span>}
+      {<span className="rcw-timestamp">{message.footer} </span>}
     </div>
   );
 }

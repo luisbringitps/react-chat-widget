@@ -29,12 +29,14 @@ export interface ToggleInputDisabled {
 export interface AddUserMessage {
   type: typeof ADD_NEW_USER_MESSAGE;
   text: string;
+  footer?: string;
   id?: string;
 }
 
 export interface AddResponseMessage {
   type: typeof ADD_NEW_RESPONSE_MESSAGE;
   text: string;
+  footer?: string;
   id?: string;
 }
 

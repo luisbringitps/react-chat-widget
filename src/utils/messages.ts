@@ -11,7 +11,8 @@ import { MESSAGES_TYPES, MESSAGE_SENDER, MESSAGE_BOX_SCROLL_DURATION } from '../
 export function createNewMessage(
   text: string,
   sender: string,
-  id?: string,
+  footer?: string,
+  id?: string
 ): MessageI {
   return {
     type: MESSAGES_TYPES.TEXT,
@@ -21,11 +22,12 @@ export function createNewMessage(
     timestamp: new Date(),
     showAvatar: true,
     customId: id,
-    unread: sender === MESSAGE_SENDER.RESPONSE
+    unread: sender === MESSAGE_SENDER.RESPONSE,
+    footer: footer ? footer : "",
   };
 }
 
-export function createLinkSnippet(link: LinkParams, id?: string) : Link {
+export function createLinkSnippet(link: LinkParams, footer?:string, id?: string) : Link {
   return {
     type: MESSAGES_TYPES.SNIPPET.LINK,
     component: Snippet,
@@ -36,11 +38,12 @@ export function createLinkSnippet(link: LinkParams, id?: string) : Link {
     timestamp: new Date(),
     showAvatar: true,
     customId: id,
-    unread: true
+    unread: true,
+    footer: footer ? footer : "",
   };
 }
 
-export function createComponentMessage(component: ElementType, props: any, showAvatar: boolean, id?: string): CustomCompMessage {
+export function createComponentMessage(component: ElementType, props: any, showAvatar: boolean, footer?: string, id?: string): CustomCompMessage {
   return {
     type: MESSAGES_TYPES.CUSTOM_COMPONENT,
     component,
@@ -49,7 +52,8 @@ export function createComponentMessage(component: ElementType, props: any, showA
     timestamp: new Date(),
     showAvatar,
     customId: id,
-    unread: true
+    unread: true,
+    footer: footer ? footer : "",
   };
 }
 
