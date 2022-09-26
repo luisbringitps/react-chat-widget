@@ -17,6 +17,7 @@ type Props = {
 
 function Message({ message }: Props) {
   
+  
   const sanitizedHTML = markdownIt({ break: true })
     .use(markdownItClass, {
       img: ['rcw-message-img']
@@ -26,13 +27,44 @@ function Message({ message }: Props) {
     .use(markdownItLinkAttributes, { attrs: { target: '_blank', rel: 'noopener' } })
     .render(message.text);
 
-    console.log(message)
   return (
     <div className={`rcw-${message.sender}`}>
-      <div className="rcw-message-text" dangerouslySetInnerHTML={{ __html: sanitizedHTML.replace(/\n$/,'') }} />
+      {
+        isLink(message.text) ?
+          <div className="rcw-message-text">
+            <a href={starLink(message.text)} className="rcw-link" target="_blank" rel="noopener noreferrer">
+              {message.text}
+            </a>
+          </div>
+        :
+          <div className="rcw-message-text" dangerouslySetInnerHTML={{ __html: sanitizedHTML.replace(/\n$/,'') }} />
+      }
+      
       {<span className="rcw-timestamp">{message.footer} </span>}
     </div>
   );
+}
+
+function isLink(message:string){
+  return validURL(message);
+}
+
+function validURL(str:string) {
+  // var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  //   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+  //   '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  //   '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  //   '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  //   '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+
+  // return !!pattern.test(str);
+  const res = str.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+  return (res !== null)
+}
+
+function starLink(link:string){
+  return link.includes("http://") || link.includes("https://") ? link : `\\/\\${link}`;
 }
 
 export default Message;

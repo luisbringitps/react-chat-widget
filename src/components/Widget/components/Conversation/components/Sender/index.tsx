@@ -43,8 +43,9 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
     onTextInputChange && onTextInputChange(event)
   }
 
-  const handlerSendMessage = () => {
+  const handlerSendMessage = (event) => {
     const el = inputRef.current;
+    event.preventDefault()
     if(el.innerHTML) {
       sendMessage(el.innerText);
       el.innerHTML = ''
@@ -69,8 +70,9 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
 
     if(event.charCode == 13 && !event.shiftKey) {
       event.preventDefault()
-      handlerSendMessage();
+      handlerSendMessage(event);
     }
+
     if(event.charCode === 13 && event.shiftKey) {
       event.preventDefault()
       insertNodeAtCaret(el);
@@ -126,13 +128,12 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
 
   return (
     <div ref={refContainer} className="rcw-sender">
+      
       <button className='rcw-picker-btn' type="submit" onClick={handlerPressEmoji}>
         <img src={emoji} className="rcw-picker-icon" alt="" />
       </button>
-      <div className={cn('rcw-new-message', {
-          'rcw-message-disable': disabledInput,
-        })
-      }>
+
+      <div className={cn('rcw-new-message', {'rcw-message-disable': disabledInput,})}>
         <div
           spellCheck
           className="rcw-input"
@@ -147,6 +148,7 @@ function Sender({ sendMessage, placeholder, disabledInput, autofocus, onTextInpu
         />
         
       </div>
+      
       <button type="submit" className="rcw-send" onClick={handlerSendMessage}>
         <img src={send} className="rcw-send-icon" alt={buttonAlt} />
       </button>
